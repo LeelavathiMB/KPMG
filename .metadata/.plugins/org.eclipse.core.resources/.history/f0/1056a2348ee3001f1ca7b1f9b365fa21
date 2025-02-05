@@ -8,8 +8,8 @@ import java.sql.Statement;
 	public class InsertExample {
 
 	
-		public static void main(String[] args) throws Throwable {
-
+		public static void main(String[] args) {
+		try {
 			String username="root";
 			String password="pass@word1";
 			String url="jdbc:mysql://localhost:3306/kpmg";
@@ -21,10 +21,12 @@ import java.sql.Statement;
 			int count=s1.executeUpdate(query);
 			System.out.println(count + "row/rows are inserted");
 ;
-			} 
+			} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
-		
+		}
 
-	
+	}
 
