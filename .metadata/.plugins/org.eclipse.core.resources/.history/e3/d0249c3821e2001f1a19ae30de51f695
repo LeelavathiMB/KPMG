@@ -1,0 +1,106 @@
+package Test;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Customer {
+    private int customerId;
+    private String name;
+    private int age;
+    private String address;
+
+    public Customer(int customerId, String name, int age, String address) {
+        this.customerId = customerId;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+    }
+
+    public int getCustomerId() {
+        return customerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public static void main(String[] args) {
+    	try {
+    		String username="root";
+    		String password="pass@word1";
+    		String url="jdbc:mysql://localhost:3306/kpmg";
+    				
+    		Connection con=DriverManager.getConnection(url,username,password);
+    		System.out.println("Connection successful");
+    	} catch (SQLException e) {
+    		// TODO Auto-generated catch block
+    		e.printStackTrace();
+    	}
+        Customer[] customers = new Customer[3];
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/kpmg");
+
+            // Create the customer table if it doesn't exist
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS customer (" +
+                    "customer_id INTEGER PRIMARY KEY, " +
+                    "name TEXT, " +
+                    "age INTEGER, " +
+                    "address TEXT)";
+            PreparedStatement createTableStatement = connection.prepareStatement(createTableSQL);
+            createTableStatement.executeUpdate();
+
+            for (int i = 0; i < 3; i++) {
+                System.out.println("Enter details for customer " + (i + 1) + ":");
+                System.out.print("Customer ID: ");
+                int customerId = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                System.out.print("Name: ");
+                String name = scanner.nextLine();
+                System.out.print("Age: ");
+                int age = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+                System.out.print("Address: ");
+                String address = scanner.nextLine();
+
+                customers[i] = new Customer(customerId, name, age, address);
+
+                // Insert the customer data into the database
+                String insertSQL = "INSERT INTO customer (customer_id, name, age, address) VALUES (?, ?, ?, ?)";
+                PreparedStatement insertStatement = connection.prepareStatement(insertSQL);
+                insertStatement.setInt(1, customerId);
+                insertStatement.setString(2, name);
+                insertStatement.setInt(3, age);
+                insertStatement.setString(4, address);
+                insertStatement.executeUpdate();
+            }
+
+            // Display the customer array
+            for (Customer customer : customers) {
+                System.out.println("Customer ID: " + customer.getCustomerId() +
+                        ", Name: " + customer.getName() +
+                        ", Age: " + customer.getAge() +
+                        ", Address: " + customer.getAddress());
+            }
+
+            // Close the database connection
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        scanner.close();
+    }
+}

@@ -1,0 +1,20 @@
+package com.Example;
+
+	
+	public class test {
+		public void test1 ()
+		{
+			database b1=new database();
+			assertEquals(true);
+		}
+
+		private void assertEquals(boolean b) {
+			// TODO Auto-generated method stub
+			
+		}
+	}
+	
+
+
+
+

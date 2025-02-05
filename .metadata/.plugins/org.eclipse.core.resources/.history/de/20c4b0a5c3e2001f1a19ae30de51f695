@@ -1,0 +1,41 @@
+package com.Example;
+    import static org.junit.Assert.assertEquals;
+	import org.junit.Test;
+	public class StudentUnitTest {
+
+	    @Test
+	    public void testAverageCalculation() {
+	        int[][] marks = {
+	            {85, 78, 92}, // Student 1
+	            {76, 85, 83}, // Student 2
+	            {91, 87, 90}  // Student 3
+	        };
+
+	        double[] expectedAverages = {85.0, 81.33333333333333, 89.33333333333333};
+	        char[] expectedGrades = {'B', 'B', 'B'};
+
+	        for (int i = 0; i < marks.length; i++) {
+	            int total = 0;
+	            for (int j = 0; j < marks[i].length; j++) {
+	                total += marks[i][j];
+	            }
+	            double average = total / 3.0;
+	            char grade = StudentMarks.getGrade(average);
+
+	            assertEquals(expectedAverages[i], average, 0.001);
+	            assertEquals(expectedGrades[i], grade);
+	        }
+	    }
+
+	    @Test
+	    public void testGrading() {
+	        assertEquals('A', StudentMarks.getGrade(95.0));
+	        assertEquals('B', StudentMarks.getGrade(85.0));
+	        assertEquals('C', StudentMarks.getGrade(75.0));
+	        assertEquals('D', StudentMarks.getGrade(65.0));
+	        assertEquals('F', StudentMarks.getGrade(55.0));
+	    }
+	}
+
+
+}

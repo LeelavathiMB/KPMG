@@ -1,0 +1,22 @@
+package com.Example;
+    import static org.junit.Assert.assertEquals;
+	import org.junit.Test;
+	public class StudentUnitTest {
+
+	    @Test
+	    public void testAverageCalculation() {
+	       =
+	    }
+
+	    @Test
+	    public void testGrading() {
+	        assertEquals('A', StudentExample.getGrade(95.0));
+	        assertEquals('B', StudentExample.getGrade(85.0));
+	        assertEquals('C', StudentExample.getGrade(75.0));
+	        assertEquals('D', StudentExample.getGrade(65.0));
+	        assertEquals('F', StudentExample.getGrade(55.0));
+	    }
+	}
+
+
+}

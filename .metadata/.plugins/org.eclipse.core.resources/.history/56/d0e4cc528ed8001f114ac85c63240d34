@@ -1,0 +1,6 @@
+package enumexample;
+
+public class Day {
+	SUNDAY,MONDAY,
+
+}

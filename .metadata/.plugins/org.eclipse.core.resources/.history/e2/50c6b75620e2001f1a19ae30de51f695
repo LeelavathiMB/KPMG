@@ -1,0 +1,97 @@
+package Test;
+
+	import java.sql.Connection;
+	import java.sql.DriverManager;
+	import java.sql.PreparedStatement;
+	import java.sql.SQLException;
+	import java.util.Scanner;
+
+	public class testExample{
+	    private int customerId;
+	    private String name;
+	    private String email;
+	    private String phoneNumber;
+
+	    public testExample(int customerId, String name, String email, String phoneNumber) {
+	        this.customerId = customerId;
+	        this.name = name;
+	        this.email = email;
+	        this.phoneNumber = phoneNumber;
+	    }
+
+	    public int getCustomerId() {
+	        return customerId;
+	    }
+
+	    public String getName() {
+	        return name;
+	    }
+
+	    public String getEmail() {
+	        return email;
+	    }
+
+	    public String getPhoneNumber() {
+	        return phoneNumber;
+	    }
+
+	    public static void main(String[] args) {
+	        Customer[] customers = new Customer[3];
+	        Scanner scanner = new Scanner(System.in);
+
+	        try {
+	            Connection connection = DriverManager.getConnection("jdbc:sqlite:kpmg.db");
+
+	            // Create the customer table if it doesn't exist
+	            String createTableSQL = "CREATE TABLE IF NOT EXISTS customer (" +
+	                    "customer_id INTEGER PRIMARY KEY, " +
+	                    "name TEXT, " +
+	                    "email TEXT, " +
+	                    "phone_number TEXT)";
+	            PreparedStatement createTableStatement = connection.prepareStatement(createTableSQL);
+	            createTableStatement.executeUpdate();
+
+	            for (int i = 0; i < 3; i++) {
+	                System.out.println("Enter details for customer " + (i + 1) + ":");
+	                System.out.print("Customer ID: ");
+	                int customerId = scanner.nextInt();
+	                scanner.nextLine(); // Consume newline
+	                System.out.print("Name: ");
+	                String name = scanner.nextLine();
+	                System.out.print("Email: ");
+	                String email = scanner.nextLine();
+	                System.out.print("Phone Number: ");
+	                String phoneNumber = scanner.nextLine();
+
+	                customers[i] = new Customer(customerId, name, email, phoneNumber);
+
+	                // Insert the customer data into the database
+	                String insertSQL = "INSERT INTO customer (customer_id, name, email, phone_number) VALUES (?, ?, ?, ?)";
+	                PreparedStatement insertStatement = connection.prepareStatement(insertSQL);
+	                insertStatement.setInt(1, customerId);
+	                insertStatement.setString(2, name);
+	                insertStatement.setString(3, email);
+	                insertStatement.setString(4, phoneNumber);
+	                insertStatement.executeUpdate();
+	            }
+
+	            // Display the customer array
+	            for (Customer customer : customers) {
+	                System.out.println("Customer ID: " + customer.getCustomerId() +
+	                        ", Name: " + customer.getName() +
+	                        ", Email: " + customer.getEmail() +
+	                        ", Phone Number: " + customer.getPhoneNumber());
+	            }
+
+	            // Close the database connection
+	            connection.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+
+	        scanner.close();
+	    }
+	}
+
+
+}
